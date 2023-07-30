@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterRoutes(router *gin.Engine, currenctService service.CurrencyService) {
-	currencyHandler := handlers.NewCurrencyHandler(currenctService)
+func RegisterRoutes(router *gin.Engine, currencyService service.CurrencyService) {
+	currencyHandler := handlers.NewCurrencyHandler(currencyService)
 
 	router.GET("/nbp/:currency/:startDate/:endDate", currencyHandler.GetAverageCurrencyRate)
 }
