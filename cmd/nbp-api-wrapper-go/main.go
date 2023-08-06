@@ -20,7 +20,7 @@ func main() {
 	}
 
 	requestRepository := repository.NewRequestRepository(db)
-	currencyService := service.NewCurrencyService(requestRepository)
+	currencyService := service.NewCurrencyService("http://api.nbp.pl", requestRepository)
 
 	router := gin.Default()
 	routers.RegisterRoutes(router, currencyService)

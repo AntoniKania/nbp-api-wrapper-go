@@ -1,0 +1,52 @@
+{
+  "table": "A",
+  "currency": "funt szterling",
+  "code": "GBP",
+  "rates": [
+    {
+      "no": "114/A/NBP/2023",
+      "effectiveDate": "2023-06-15",
+      "mid": 5.2166
+    },
+    {
+      "no": "115/A/NBP/2023",
+      "effectiveDate": "2023-06-16",
+      "mid": 5.2095
+    },
+    {
+      "no": "116/A/NBP/2023",
+      "effectiveDate": "2023-06-19",
+      "mid": 5.2140
+    },
+    {
+      "no": "117/A/NBP/2023",
+      "effectiveDate": "2023-06-20",
+      "mid": 5.1877
+    },
+    {
+      "no": "118/A/NBP/2023",
+      "effectiveDate": "2023-06-21",
+      "mid": 5.1703
+    },
+    {
+      "no": "119/A/NBP/2023",
+      "effectiveDate": "2023-06-22",
+      "mid": 5.1519
+    },
+    {
+      "no": "120/A/NBP/2023",
+      "effectiveDate": "2023-06-23",
+      "mid": 5.1940
+    },
+    {
+      "no": "121/A/NBP/2023",
+      "effectiveDate": "2023-06-26",
+      "mid": 5.1803
+    },
+    {
+      "no": "122/A/NBP/2023",
+      "effectiveDate": "2023-06-27",
+      "mid": 5.1561
+    }
+  ]
+}

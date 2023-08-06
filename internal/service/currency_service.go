@@ -18,17 +18,19 @@ type CurrencyService interface {
 }
 
 type currencyService struct {
+	targetAddress     string
 	requestRepository repository.RequestRepository
 }
 
-func NewCurrencyService(requestRepository repository.RequestRepository) CurrencyService {
+func NewCurrencyService(targetAddress string, requestRepository repository.RequestRepository) CurrencyService {
 	return &currencyService{
+		targetAddress:     targetAddress,
 		requestRepository: requestRepository,
 	}
 }
 
 func (s *currencyService) GetAverageCurrencyRate(ctx context.Context, currency string, startDate string, endDate string) float64 {
-	url, _ := buildUrl(currency, startDate, endDate)
+	url, _ := buildUrl(s.targetAddress, currency, startDate, endDate)
 
 	rates := getCurrencyRates(url)
 
@@ -69,8 +71,8 @@ func getCurrencyRates(u *url2.URL) []model.CurrencyRate {
 	return nbpResponse.Rates
 }
 
-func buildUrl(currency string, startDate string, endDate string) (*url2.URL, error) {
-	baseUrl := "http://api.nbp.pl/api/exchangerates/rates/a"
+func buildUrl(targetAddress string, currency string, startDate string, endDate string) (*url2.URL, error) {
+	baseUrl := targetAddress + "/api/exchangerates/rates/a"
 	u, err := url2.Parse(baseUrl)
 	if err != nil {
 		return nil, err
