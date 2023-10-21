@@ -7,7 +7,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/stretchr/testify v1.8.4
 	github.com/testcontainers/testcontainers-go v0.22.0
-	github.com/walkerus/go-wiremock v1.6.0
+	github.com/wiremock/go-wiremock v1.7.1
 	go.uber.org/mock v0.2.0
 )
 

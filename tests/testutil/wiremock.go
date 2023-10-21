@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"github.com/wiremock/go-wiremock"
 	"os"
 
 	"github.com/testcontainers/testcontainers-go"
-	"github.com/walkerus/go-wiremock"
 	"testing"
 )
 
@@ -34,7 +34,7 @@ func ReadFile(fileName string) string {
 func setupWireMockContainer(t *testing.T) (context.Context, testcontainers.Container) {
 	ctx := context.Background()
 	req := testcontainers.ContainerRequest{
-		Image:        "wiremock/wiremock:latest",
+		Image:        "wiremock/wiremock:2.35.0-1-alpine",
 		ExposedPorts: []string{"8443/tcp"},
 		Cmd:          []string{"--port", "8443"},
 		WaitingFor:   wait.ForLog("port:"),

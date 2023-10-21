@@ -5,7 +5,7 @@ import (
 	"github.com/AntoniKania/nbp-api-wrapper-go/internal/database/mock_repository"
 	"github.com/AntoniKania/nbp-api-wrapper-go/tests/testutil"
 	"github.com/stretchr/testify/assert"
-	"github.com/walkerus/go-wiremock"
+	"github.com/wiremock/go-wiremock"
 	"go.uber.org/mock/gomock"
 	"testing"
 )
@@ -17,11 +17,11 @@ func TestGetAverageCurrencyRate(t *testing.T) {
 	service := NewCurrencyService(wmAdd, m)
 
 	wm.StubFor(wiremock.Get(wiremock.URLPathEqualTo("/api/exchangerates/rates/a/gbp/2023-06-15/2023-06-27")).
-		WillReturn(
-			testutil.ReadFile("response.json"),
-			map[string]string{"Content-Type": "application/json"},
-			200).
-		AtPriority(1))
+		WillReturnResponse(wiremock.NewResponse().
+			WithStatus(200).
+			WithBody(testutil.ReadFile("response.json")).
+			WithHeader("Content-Type", "application/json"),
+		))
 
 	m.
 		EXPECT().
