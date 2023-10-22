@@ -1,18 +1,26 @@
 package service
 
 import (
-	"github.com/AntoniKania/nbp-api-wrapper-go/tests/testutil"
+	. "github.com/AntoniKania/nbp-api-wrapper-go/tests/testutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/wiremock/go-wiremock"
+	"os"
 	"testing"
 )
 
+func TestMain(m *testing.M) {
+	SetupWireMock()
+
+	code := m.Run()
+
+	Wm.CleanUp()
+	os.Exit(code)
+}
+
 func TestGetRandomRequest(t *testing.T) {
-	wm, wmAdd := testutil.SetupWireMock(t)
+	service := NewRandomService(Wm.Address)
 
-	service := NewRandomService(wmAdd)
-
-	wm.StubFor(wiremock.Get(wiremock.URLPathEqualTo("/hello")).
+	Wm.Client.StubFor(wiremock.Get(wiremock.URLPathEqualTo("/hello")).
 		WillReturnResponse(wiremock.NewResponse().
 			WithStatus(200).
 			WithBody("hello")),

@@ -13,10 +13,9 @@ import (
 func TestGetAverageCurrencyRate(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	m := mock_repository.NewMockRequestRepository(ctrl)
-	wm, wmAdd := testutil.SetupWireMock(t)
-	service := NewCurrencyService(wmAdd, m)
+	service := NewCurrencyService(testutil.Wm.Address, m)
 
-	wm.StubFor(wiremock.Get(wiremock.URLPathEqualTo("/api/exchangerates/rates/a/gbp/2023-06-15/2023-06-27")).
+	testutil.Wm.Client.StubFor(wiremock.Get(wiremock.URLPathEqualTo("/api/exchangerates/rates/a/gbp/2023-06-15/2023-06-27")).
 		WillReturnResponse(wiremock.NewResponse().
 			WithStatus(200).
 			WithBody(testutil.ReadFile("response.json")).

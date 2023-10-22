@@ -8,22 +8,33 @@ import (
 	"os"
 
 	"github.com/testcontainers/testcontainers-go"
-	"testing"
 )
 
-var wiremockClient *wiremock.Client
+var Wm *WireMock
 
-func SetupWireMock(t *testing.T) (*wiremock.Client, string) {
-	ctx, wmContainer := setupWireMockContainer(t)
+type WireMock struct {
+	Client    *wiremock.Client
+	Address   string
+	ctx       context.Context
+	container testcontainers.Container
+}
+
+func SetupWireMock() {
+	ctx, wmContainer := setupWireMockContainer()
 
 	ip, _ := wmContainer.Host(ctx)
 	port, _ := wmContainer.MappedPort(ctx, "8443")
 	wmAdd := fmt.Sprintf("http://%s:%s", ip, port.Port())
 
-	wiremockClient = wiremock.NewClient(wmAdd)
+	wiremockClient := wiremock.NewClient(wmAdd)
 	defer wiremockClient.Reset()
 
-	return wiremockClient, wmAdd
+	Wm = &WireMock{
+		Client:    wiremockClient,
+		Address:   wmAdd,
+		ctx:       ctx,
+		container: wmContainer,
+	}
 }
 
 func ReadFile(fileName string) string {
@@ -31,7 +42,7 @@ func ReadFile(fileName string) string {
 	return string(b)
 }
 
-func setupWireMockContainer(t *testing.T) (context.Context, testcontainers.Container) {
+func setupWireMockContainer() (context.Context, testcontainers.Container) {
 	ctx := context.Background()
 	req := testcontainers.ContainerRequest{
 		Image:        "wiremock/wiremock:2.35.0-1-alpine",
@@ -45,13 +56,14 @@ func setupWireMockContainer(t *testing.T) (context.Context, testcontainers.Conta
 		Started:          true,
 	})
 	if err != nil {
-		t.Error(err)
+		panic(err)
 	}
 
-	t.Cleanup(func() {
-		if err := wmContainer.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 	return ctx, wmContainer
+}
+
+func (wm *WireMock) CleanUp() {
+	if err := wm.container.Terminate(wm.ctx); err != nil {
+		panic(err)
+	}
 }
